@@ -1,0 +1,7 @@
+fastapi==0.58.0
+redis~=3.5.3
+uvicorn==0.11.5
+python-dotenv==0.14.0
+email-validator==1.1.1
+pydantic~=1.5.1
+celery==5.0.0
