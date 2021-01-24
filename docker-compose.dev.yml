@@ -2,9 +2,12 @@ version: "2.2"
 services:
 
   backend:
-    image: cheesy008/fastapi_email
+    build:
+      context: .
     ports:
       - "4000:4000"
+    volumes:
+      - .:/code
     env_file:
       - .env
 
@@ -16,15 +19,13 @@ services:
     depends_on:
       - backend
     ports:
-    - 6380:${REDIS_PORT}
+    - ${REDIS_PORT}:${REDIS_PORT}
 
   worker:
-    image: cheesy008/fastapi_email
+    build: .
     command: celery -A app.worker.celery_app worker -l DEBUG
+    volumes:
+      - .:/code
     depends_on:
       - backend
       - redis
-    env_file:
-      - .env
-
-

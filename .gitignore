@@ -8,4 +8,4 @@ __pycache__/
 *.ipynb
 .env
 data/
-emails.json
+emails.txt
