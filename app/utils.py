@@ -20,10 +20,6 @@ class Login(BaseModel):
     password: str
 
 
-class EmailsOut(BaseModel):
-    emails: List[str] = []
-
-
 def check_activated_email(email):
     with open('emails.txt', 'r') as f:
         for stored_email in f:

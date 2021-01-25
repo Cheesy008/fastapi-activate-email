@@ -6,9 +6,10 @@ from fastapi.responses import JSONResponse
 from fastapi import FastAPI, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
+from fastapi.responses import FileResponse
 
 from .worker.celery_worker import send_email_task
-from .utils import ActivateEmail, Login, check_activated_email, EmailsOut
+from .utils import ActivateEmail, Login, check_activated_email
 from .constants import (EXPIRE_TIME, REDIS_HOST, REDIS_PORT,
                         ADMIN_USERNAME, ADMIN_PASSWORD, ALLOW_ORIGINS)
 
@@ -66,11 +67,10 @@ async def activate_email(payload: ActivateEmail):
     return JSONResponse(status_code=200, content={'message': 'Email activated successfully'})
 
 
-@app.post('/load-emails', response_model=EmailsOut)
+@app.post('/load-emails')
 async def load_emails(payload: Login):
     if payload.username != ADMIN_USERNAME or payload.password != ADMIN_PASSWORD:
         raise HTTPException(status_code=400, detail={'error': 'Invalid credentials'})
 
-    with open('emails.txt', 'r') as f:
-        return {'emails': [email.strip() for email in f]}
+    return FileResponse('emails.txt')
 
