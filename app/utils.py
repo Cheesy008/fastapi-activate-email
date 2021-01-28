@@ -1,5 +1,4 @@
 from pydantic import EmailStr, BaseModel, validator
-from typing import List
 from fastapi import HTTPException
 
 
@@ -23,5 +22,5 @@ class Login(BaseModel):
 def check_activated_email(email):
     with open('emails.txt', 'r') as f:
         for stored_email in f:
-            if email == stored_email:
+            if email == stored_email.strip():
                 raise HTTPException(status_code=400, detail={'error': 'Email already activated'})

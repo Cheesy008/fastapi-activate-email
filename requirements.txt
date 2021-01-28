@@ -6,3 +6,4 @@ email-validator==1.1.1
 pydantic~=1.5.1
 celery==5.0.0
 aiofiles==0.6.0
+Jinja2==2.11.2

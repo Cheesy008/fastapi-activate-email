@@ -3,6 +3,8 @@ services:
 
   backend:
     image: cheesy008/fastapi_email
+    volumes:
+      - ./emails.txt:/code/emails.txt
     ports:
       - "4000:4000"
     env_file:
