@@ -7,7 +7,6 @@ from fastapi import FastAPI, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
 from fastapi.responses import FileResponse
-from jinja2 import Template
 
 from .worker.celery_worker import send_email_task
 from .utils import ActivateEmail, Login, check_activated_email
@@ -42,13 +41,7 @@ async def generate_code(email: EmailStr):
     generated_code = ''.join(choice(chars) for _ in range(4))
     r.set(email, generated_code, ex=EXPIRE_TIME)
 
-    with open('templates/email.html', 'r') as f:
-        template_string = f.read()
-
-    template = Template(template_string)
-    message = template.render(generated_code=generated_code)
-
-    send_email_task.delay(message, email)
+    send_email_task.delay(generated_code, email)
 
     return JSONResponse(status_code=200, content={'message': 'Code was sent on email'})
 
