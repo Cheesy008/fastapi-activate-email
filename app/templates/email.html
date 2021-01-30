@@ -5,29 +5,32 @@
     <title>Email</title>
 </head>
 <body>
-    <div style="width:100%;height:100%;margin:auto;background:#EBF2F8;padding: 60px 30px;font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;">
-        <div style="font-size: 24px;margin-bottom:35px;text-align: center;">Ваш код подтвержения:</div>
-         
-        <div style="text-align: center;">
-          <span style="background-image: linear-gradient(to right, #2400d9, #7b00e4);padding: 10px 35px;color:#fff;border-radius:20px;margin-bottom:45px;font-size: 22px;font-weight:600;letter-spacing: 6px;display:inline-block;" id="code">
-              {{generated_code}}
-          </span>
+<div style="width:100%;height:100%;margin:auto;background:#EBF2F8;padding: 60px 30px;font-family:Roboto,RobotoDraft,Helvetica,Arial,sans-serif;">
+    <div style="font-size: 24px;margin-bottom:35px;text-align: center;">Email Verification Code::</div>
+
+    <div style="text-align: center;">
+        <span style="background-image: linear-gradient(to right, #2400d9, #7b00e4);padding: 10px 35px;color:#fff;border-radius:20px;margin-bottom:45px;font-size: 22px;font-weight:600;letter-spacing: 6px;display:inline-block;"
+              id="code">{{generated_code}}</span>
+    </div>
+    <div style="background: #fff;padding:15px 20px;width:400px;font-size: 17px;letter-spacing:0.5px;margin-bottom: 30px;margin-right:auto;margin-left:auto;">
+        <div style="margin-bottom: 15px;">
+            Hello,
         </div>
-       <div style="background: #fff;padding:15px 20px;width:400px;font-size: 17px;letter-spacing:0.5px;margin-bottom: 30px;margin-right:auto;margin-left:auto;">
-         <div style="margin-bottom: 15px;">
-           Здравствуйте.
-         </div>
-         <div style="margin-bottom: 20px;">
-     Недавно вы попытались принять участие в акции... Я не знаю что написать еще. Используйте данный код, чтобы подтвердить свою почту
-       </div>
-       <div style="">
-         Если это были не вы, просто проигнорируйте письмо.
-       </div>
-       </div>
-       <div style="font-size: 13px;text-align:center;">
-         За помощью вы можете обратиться на почту <span style="color: rgb(0 115 255);">rlhelp@gmail.com</span>
-       </div>
-     </div>
+        <div style="margin-bottom: 20px;">
+            Please verify your email address using the code above to complete email verification.<br>
+            Your verification code will expire in 30 minutes, so make sure you use it as soon as you can.
+        </div>
+        <div style="margin-bottom: 20px;">
+            Thank you.
+        </div>
+        <div>
+            If you did not request this code then there is no further action you need to take. No email will be
+            verified.
+        </div>
+    </div>
+    <div style="font-size: 13px;text-align:center;">
+        If you are having issues with email verification or creating an account, please contact support.
+    </div>
 </div>
 </body>
 </html>

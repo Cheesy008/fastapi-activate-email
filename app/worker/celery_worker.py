@@ -18,8 +18,9 @@ def send_email_task(generated_code, receiver_email):
     rendered_template = template.render(generated_code=generated_code)
 
     message = MIMEText(rendered_template, 'html',  _charset="UTF-8")
-    message['Subject'] = 'Активация аккаунта'
+    message['Subject'] = 'Email Verification Code'
     message['From'] = SENDER_EMAIL
+    message['To'] = receiver_email
 
     with smtplib.SMTP_SSL(HOST, PORT, context=context) as server:
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
