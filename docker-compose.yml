@@ -1,5 +1,13 @@
-version: "2.2"
+version: "3"
 services:
+  nginx:
+    image: nginx
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    ports:
+    - 80:80
 
   backend:
     image: cheesy008/fastapi_email
@@ -18,7 +26,7 @@ services:
     depends_on:
       - backend
     ports:
-    - 6380:${REDIS_PORT}
+      - 6380:${REDIS_PORT}
 
   worker:
     image: cheesy008/fastapi_email
