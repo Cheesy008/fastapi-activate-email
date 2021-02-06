@@ -36,11 +36,21 @@ async def startup_event():
 @app.get("/generate-code")
 async def generate_code(email: EmailStr):
     check_activated_email(email)
-
     chars = string.digits
     generated_code = ''.join(choice(chars) for _ in range(4))
-    r.set(email, generated_code, ex=EXPIRE_TIME)
 
+    stored_limit = r.hget(email, 'limit')
+
+    if stored_limit:
+        stored_limit = int(stored_limit.decode('utf-8'))
+        if stored_limit >= 2:
+            raise HTTPException(status_code=400, detail={'error': 'You can not send code more than two times'})
+        else:
+            r.hmset(email, {'code': generated_code, 'limit': 2})
+    else:
+        r.hmset(email, {'code': generated_code, 'limit': 1})
+
+    r.expire(email, EXPIRE_TIME)
     send_email_task.delay(generated_code, email)
 
     return JSONResponse(status_code=200, content={'message': 'Code was sent on email'})
@@ -49,18 +59,20 @@ async def generate_code(email: EmailStr):
 @app.post('/activate-email')
 async def activate_email(payload: ActivateEmail):
     email = payload.email
+    platform = payload.platform
+    name = payload.name
     code = payload.code
     check_activated_email(email)
 
     if not r.exists(email):
         return HTTPException(status_code=400, detail={'error': 'Email for activation does not exist'})
 
-    stored_code = r.get(email).decode("utf-8")
+    stored_code = r.hget(email, 'code').decode('utf-8')
     if code != stored_code:
         return HTTPException(status_code=400, detail={'error': 'Your code does not match the stored value'})
 
     with open('emails.txt', 'a') as f:
-        f.write(f"{email}\n")
+        f.write(f"{email}\t{platform}\t{name}\n")
 
     r.delete(email)
 

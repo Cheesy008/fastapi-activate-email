@@ -4,6 +4,8 @@ from fastapi import HTTPException
 
 class ActivateEmail(BaseModel):
     email: EmailStr
+    platform: str
+    name: str
     code: str
 
     @validator('code')
@@ -22,5 +24,5 @@ class Login(BaseModel):
 def check_activated_email(email):
     with open('emails.txt', 'r') as f:
         for stored_email in f:
-            if email == stored_email.strip():
+            if email == stored_email.split('\t')[0].strip():
                 raise HTTPException(status_code=400, detail={'error': 'Email already activated'})

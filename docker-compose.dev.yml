@@ -1,5 +1,13 @@
 version: "2.2"
 services:
+  nginx:
+    image: nginx
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    ports:
+    - 80:80
 
   backend:
     build:
