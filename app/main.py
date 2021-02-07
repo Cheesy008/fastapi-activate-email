@@ -3,7 +3,7 @@ import string
 import redis
 from random import choice
 from fastapi.responses import JSONResponse
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import EmailStr
 from fastapi.responses import FileResponse
@@ -31,6 +31,11 @@ async def startup_event():
     if not os.path.exists('emails.txt'):
         with open('emails.txt', 'w+') as f:
             pass
+
+
+def login(payload: Login):
+    if payload.username != ADMIN_USERNAME or payload.password != ADMIN_PASSWORD:
+        raise HTTPException(status_code=400, detail={'error': 'Invalid credentials'})
 
 
 @app.get("/generate-code")
@@ -79,10 +84,12 @@ async def activate_email(payload: ActivateEmail):
     return JSONResponse(status_code=200, content={'message': 'Email activated successfully'})
 
 
-@app.post('/load-emails')
-async def load_emails(payload: Login):
-    if payload.username != ADMIN_USERNAME or payload.password != ADMIN_PASSWORD:
-        raise HTTPException(status_code=400, detail={'error': 'Invalid credentials'})
-
+@app.post('/load-emails', dependencies=[Depends(login)])
+async def load_emails():
     return FileResponse('emails.txt')
 
+
+@app.post('/empty-file', dependencies=[Depends(login)])
+async def empty_file():
+    with open('emails.txt', 'w'):
+        return JSONResponse(status_code=200, content={'message': 'Emails deleted'})

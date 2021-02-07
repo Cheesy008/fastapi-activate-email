@@ -12,7 +12,6 @@ class ActivateEmail(BaseModel):
     def validate_code_length(cls, v):
         if len(v.strip()) != 4:
             raise ValueError({'error': 'Code must have 4 digits'})
-
         return v
 
 
